@@ -23,5 +23,15 @@ describe("PUT /set", () => {
     it("updates the app memory", () => {
       expect(app.locals.memory).toEqual({ name: "John" });
     });
+
+    it("replaces memory when querying the same key", async () => {
+      response = await request(app).put("/set?name=Jane");
+      expect(app.locals.memory).toEqual({ name: "Jane" });
+    });
+
+    it("does nothing when sending the same request", async () => {
+      response = await request(app).put("/set?name=John");
+      expect(app.locals.memory).toEqual({ name: "John" });
+    });
   });
 });
