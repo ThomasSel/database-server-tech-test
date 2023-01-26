@@ -2,6 +2,10 @@ const request = require("supertest");
 const app = require("../../app.js");
 
 describe("PUT /set", () => {
+  beforeEach(() => {
+    app.locals.memory = {};
+  });
+
   describe("with one query parameter", () => {
     let response;
     beforeEach(async () => {
