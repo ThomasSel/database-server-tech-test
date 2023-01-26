@@ -24,14 +24,21 @@ describe("PUT /set", () => {
       expect(app.locals.memory).toEqual({ name: "John" });
     });
 
-    it("replaces memory when querying the same key", async () => {
-      response = await request(app).put("/set?name=Jane");
-      expect(app.locals.memory).toEqual({ name: "Jane" });
-    });
+    describe("with a second request", () => {
+      it("does nothing when sending the same request", async () => {
+        response = await request(app).put("/set?name=John");
+        expect(app.locals.memory).toEqual({ name: "John" });
+      });
 
-    it("does nothing when sending the same request", async () => {
-      response = await request(app).put("/set?name=John");
-      expect(app.locals.memory).toEqual({ name: "John" });
+      it("replaces memory with same key and a different value", async () => {
+        response = await request(app).put("/set?name=Jane");
+        expect(app.locals.memory).toEqual({ name: "Jane" });
+      });
+
+      it("adds another key-value pair for a different query", async () => {
+        response = await request(app).put("/set?username=j0hn");
+        expect(app.locals.memory).toEqual({ name: "John", username: "j0hn" });
+      });
     });
   });
 });
