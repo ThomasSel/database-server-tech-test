@@ -67,5 +67,10 @@ describe("PUT /set", () => {
       const response = await request(app).put("/set?name=John&username=j0hn");
       expect(response.body.message).toEqual("OK");
     });
+
+    it("adds both keys to memory", async () => {
+      const response = await request(app).put("/set?name=John&username=j0hn");
+      expect(app.locals.memory).toEqual({ name: "John", username: "j0hn" });
+    });
   });
 });
