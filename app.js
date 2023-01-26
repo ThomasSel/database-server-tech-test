@@ -3,6 +3,7 @@ const app = express();
 const port = 4000;
 
 const setRouter = require("./routes/set");
+const getRouter = require("./routes/get");
 
 app.use(express.json());
 
@@ -11,15 +12,7 @@ app.use(express.json());
 app.locals.memory = {};
 
 app.use("/set", setRouter);
-
-app.get("/get", (req, res) => {
-  value = req.app.locals.memory[req.query.key];
-  if (value === undefined) {
-    res.status(400).send(`Key ${req.query.key} doesn't exist in memory`);
-  } else {
-    res.status(200).json({ value: value });
-  }
-});
+app.use("/get", getRouter);
 
 app.listen(port, () => {
   console.log(`Server is listening on localhost:${port}`);
