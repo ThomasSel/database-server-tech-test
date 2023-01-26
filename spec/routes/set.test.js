@@ -72,5 +72,41 @@ describe("PUT /set", () => {
       const response = await request(app).put("/set?name=John&username=j0hn");
       expect(app.locals.memory).toEqual({ name: "John", username: "j0hn" });
     });
+
+    describe("with a second request", () => {
+      beforeEach(async () => {
+        await request(app).put("/set?name=John&username=j0hn");
+      });
+
+      it("does nothing when sending the same request", async () => {
+        await request(app).put("/set?name=John&username=j0hn");
+        expect(app.locals.memory).toEqual({ name: "John", username: "j0hn" });
+      });
+
+      it("updates a single key", async () => {
+        await request(app).put("/set?name=Jane");
+        expect(app.locals.memory).toEqual({ name: "Jane", username: "j0hn" });
+      });
+
+      it("updates one key and adds another", async () => {
+        await request(app).put("/set?name=Jane&lastName=Doe");
+        expect(app.locals.memory).toEqual({
+          name: "Jane",
+          lastName: "Doe",
+          username: "j0hn",
+        });
+      });
+
+      it("adds three new keys", async () => {
+        await request(app).put("/set?key1=value1&key2=value2&key3=value3");
+        expect(app.locals.memory).toEqual({
+          name: "John",
+          username: "j0hn",
+          key1: "value1",
+          key2: "value2",
+          key3: "value3",
+        });
+      });
+    });
   });
 });
