@@ -56,4 +56,16 @@ describe("PUT /set", () => {
       });
     });
   });
+
+  describe("with two or more query parameters", () => {
+    it("responds with status 201", async () => {
+      const response = await request(app).put("/set?name=John&username=j0hn");
+      expect(response.status).toEqual(201);
+    });
+
+    it("responds with a confirmation message", async () => {
+      const response = await request(app).put("/set?name=John&username=j0hn");
+      expect(response.body.message).toEqual("OK");
+    });
+  });
 });
