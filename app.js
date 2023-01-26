@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const port = 4000;
 
-app.put("/set", (req, res) => {
-  res.status(201).send("OK");
-});
+const setRouter = require("./routes/set");
+
+app.use("/set", setRouter);
 
 if (!process.env.TEST) {
   app.listen(port, () => {
