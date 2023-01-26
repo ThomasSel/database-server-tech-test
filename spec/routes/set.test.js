@@ -6,6 +6,21 @@ describe("PUT /set", () => {
     app.locals.memory = {};
   });
 
+  describe("without a query parameter", () => {
+    let response;
+    beforeEach(async () => {
+      response = await request(app).put("/set");
+    });
+
+    it("responds with status 204", () => {
+      expect(response.status).toEqual(204);
+    });
+
+    it("has no body", () => {
+      expect(response.body).toEqual({});
+    });
+  });
+
   describe("with one query parameter", () => {
     let response;
     beforeEach(async () => {
