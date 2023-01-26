@@ -7,5 +7,10 @@ describe("PUT /set", () => {
       response = await request(app).put("/set?name=John");
       expect(response.status).toEqual(201);
     });
+
+    it("responds with a confirmation message", async () => {
+      response = await request(app).put("/set?name=John");
+      expect(response.body.message).toEqual("OK");
+    });
   });
 });
