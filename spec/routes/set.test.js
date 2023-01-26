@@ -15,5 +15,9 @@ describe("PUT /set", () => {
     it("responds with a confirmation message", () => {
       expect(response.body.message).toEqual("OK");
     });
+
+    it("updates the app memory", () => {
+      expect(app.locals.memory).toEqual({ name: "John" });
+    });
   });
 });
