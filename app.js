@@ -2,17 +2,18 @@ const express = require("express");
 const app = express();
 const port = 4000;
 
+const setRouter = require("./routes/set");
+
 app.use(express.json());
 
-const memory = {};
+// Local memory to store key-value pairs available within each route
+//   (req.app.locals.memory)
+app.locals.memory = {};
 
-app.post("/set", (req, res) => {
-  Object.assign(memory, req.query);
-  res.status(200).json({ message: "OK" });
-});
+app.use("/set", setRouter);
 
 app.get("/get", (req, res) => {
-  value = memory[req.query.key];
+  value = req.app.locals.memory[req.query.key];
   if (value === undefined) {
     res.status(400).send(`Key ${req.query.key} doesn't exist in memory`);
   } else {
