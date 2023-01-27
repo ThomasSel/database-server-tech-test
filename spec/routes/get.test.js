@@ -73,4 +73,18 @@ describe("GET /get", () => {
       });
     });
   });
+
+  describe("with the key and another query parameter", () => {
+    beforeEach(async () => {
+      response = await request(app).get("/get?name=John&key=name");
+    });
+
+    it("responds with status 400", () => {
+      expect(response.status).toEqual(400);
+    });
+
+    it("responds with an error message", () => {
+      expect(response.body.message).toEqual("Bad Request");
+    });
+  });
 });
