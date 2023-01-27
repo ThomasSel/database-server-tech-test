@@ -19,6 +19,10 @@ describe("PUT /set", () => {
     it("has no body", () => {
       expect(response.body).toEqual({});
     });
+
+    it("does nothing to memory", () => {
+      expect(app.locals.memory).toEqual({});
+    });
   });
 
   describe("with one query parameter", () => {
@@ -40,6 +44,11 @@ describe("PUT /set", () => {
     });
 
     describe("with a second request", () => {
+      it("does nothing when sending an empty request", async () => {
+        response = await request(app).put("/set");
+        expect(app.locals.memory).toEqual({ name: "John" });
+      });
+
       it("does nothing when sending the same request", async () => {
         response = await request(app).put("/set?name=John");
         expect(app.locals.memory).toEqual({ name: "John" });
@@ -76,6 +85,11 @@ describe("PUT /set", () => {
     describe("with a second request", () => {
       beforeEach(async () => {
         await request(app).put("/set?name=John&username=j0hn");
+      });
+
+      it("does nothing when sending an empty request", async () => {
+        response = await request(app).put("/set");
+        expect(app.locals.memory).toEqual({ name: "John", username: "j0hn" });
       });
 
       it("does nothing when sending the same request", async () => {
