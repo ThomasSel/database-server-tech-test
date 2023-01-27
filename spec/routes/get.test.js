@@ -37,7 +37,7 @@ describe("GET /get", () => {
       app.locals.memory = { name: "John", username: "j0hn" };
     });
 
-    describe("the key exists in memory", () => {
+    describe("when the key exists in memory", () => {
       it("responds with status 200", async () => {
         response = await request(app).get("/get?key=name");
         expect(response.status).toEqual(200);
@@ -48,14 +48,28 @@ describe("GET /get", () => {
         expect(response.body.message).toEqual("OK");
       });
 
-      it("responds with the value for name", async () => {
+      it("responds with the value for e.g. name", async () => {
         response = await request(app).get("/get?key=name");
         expect(response.body.value).toEqual("John");
       });
 
-      it("responds with the value for username", async () => {
+      it("responds with the value for e.g. username", async () => {
         response = await request(app).get("/get?key=username");
         expect(response.body.value).toEqual("j0hn");
+      });
+    });
+
+    describe("when the key doesn't exist in memory", () => {
+      beforeEach(async () => {
+        response = await request(app).get("/get?key=lastName");
+      });
+
+      it("responds with status 404", () => {
+        expect(response.status).toEqual(404);
+      });
+
+      it("response with not found error message", () => {
+        expect(response.body.message).toEqual('Key "lastName" not found');
       });
     });
   });
