@@ -1,4 +1,4 @@
-module.exports = {
+const GetController = {
   get: (req, res) => {
     if (
       Object.keys(req.query).length !== 1 ||
@@ -16,3 +16,5 @@ module.exports = {
     res.status(200).json({ message: "OK", value: value });
   },
 };
+
+module.exports = GetController;
