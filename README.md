@@ -72,3 +72,17 @@ To run the tests, run
 ```
 npm run test
 ```
+
+# Technical Details
+
+The server logic is implemented using `express`, which is responsible for hosting the server and routing incoming requests.
+
+We use express' `app.locals` object as our storage since it persists for the lifetime of the server, and can be accessed from the `req` object of any `express` route function (`req.app.local`), making it visible to both our `PUT` and `GET` request controllers.
+
+When our server starts up, we initialize `app.locals.memory` to an empty object.
+
+When sending a `PUT /set` request, we call the `SetController.put` function.
+We create/update keys in `app.locals.memory` with those in the query parameters of the request (accessed via the `req.query` object).
+
+When sending a `GET /get` request, we call the `GetController.get` function.
+We then query `app.locals.memory` for the given key, and either return the associated value, or respond with a `404` status if the key has not yet been set.
